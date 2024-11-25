@@ -1,12 +1,13 @@
 version: '3.8'
 services:
-	first_service:
-		image: nginx:latest
-		ports:
-			- '8080:80'
+  first_service:
+    image: nginx:latest
+    ports:
+      - '8080:80'
 
-	second_service:
-		image: rust:latest
-		ports:
-			- '8080:80'
-			- '777:1010'
+  second_service:
+    image: rust:latest
+    ports:
+      - '8080:80'
+      - '777:1010'
+
