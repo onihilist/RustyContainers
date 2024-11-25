@@ -114,11 +114,11 @@ impl RCServices {
         writer.write_all(b"services:\n")?;
 
         for container in &self.containers {
-            writer.write_all(format!("\t{}:\n", container.name).as_bytes())?;
-            writer.write_all(format!("\t\timage: {}\n", container.image).as_bytes())?;
-            writer.write_all(b"\t\tports:\n")?;
+            writer.write_all(format!("  {}:\n", container.name).as_bytes())?;
+            writer.write_all(format!("    image: {}\n", container.image).as_bytes())?;
+            writer.write_all(b"    ports:\n")?;
             for port in &container.ports {
-                writer.write_all(format!("\t\t\t- '{}:{}'\n", port.host, port.container).as_bytes())?;
+                writer.write_all(format!("      - '{}:{}'\n", port.host, port.container).as_bytes())?;
             }
             writer.write_all(b"\n")?;
         }
