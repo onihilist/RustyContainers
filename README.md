@@ -61,7 +61,8 @@ TODO : option in the list of features but not done
 | ✔️        | `.set_name(service_name: &str)`                    | OK     | Set the service name.                 | ❌                     |
 | ✔️        | `.set_image(service_image: &str)`                  | OK     | Set the image to run for the service. | ❌                     |
 | ✔️        | `.add_port(host_port: &str, container_port: &str)` | OK     | Set ports for the service.            | ❌                     |
-| ❌         | `.add_environment(key: &str, value: &str)`         | DEV    | Add a env var to the service.         | ✔️                    |
-| ❌         | `.add_volume(volume: &str)`                        | DEV    | Add a volume to the service.          | ✔️                    |
-| ❌         | `.set_restart_policy(policy: &str)`                | TODO   |                                       | ❌                     |
+| ✔️         | `.add_environment(key: &str, value: &str)`         | OK    | Add a env var to the service.         | ❌                    |
+| ✔️         | `.add_volume(volume: &str)`                        | OK    | Add a volume to the service.          | ❌                    |
+| ✔️         | `.add_network(network_given: RCNetwork)`           | OK    | Add a volume to the service.          | ❌                    |
+| ❌         | `.set_restart_policy(policy: &str)`                | TODO  |                                       | ❌                     |
 
