@@ -1,11 +1,12 @@
 
 pub mod networks;
-pub mod process;
+mod port;
 
 use std::collections::HashMap;
 use std::fs;
 use std::io::Write;
 use networks::RCNetwork;
+use port::RCPortMapping;
 
 #[derive(Debug)]
 pub struct RCServices {
@@ -33,17 +34,6 @@ pub struct RCContainer {
     working_directory: Option<String>,
     network_mode: Option<String>,
     entrypoint: Option<String>,
-}
-
-#[derive(Debug)]
-struct RCPortMapping {
-    host: String,
-    container: String,
-}
-
-#[derive(Debug)]
-struct RCVolumes {
-    path: String,
 }
 
 impl RCContainer {
@@ -82,14 +72,6 @@ impl RCContainer {
         self
     }
 
-    pub(crate) fn add_port(mut self, host_port: &str, container_port: &str) -> Self {
-        self.ports.push(RCPortMapping {
-            host: host_port.to_string(),
-            container: container_port.to_string(),
-        });
-        self
-    }
-
     pub(crate) fn add_environment(mut self, key: &str, value: &str) -> Self {
         if let Some(ref mut env) = self.environment {
             env.insert(key.to_string(), value.to_string());
@@ -100,13 +82,6 @@ impl RCContainer {
     pub(crate) fn add_volume(mut self, volume: &str) -> Self {
         if let Some(ref mut volumes) = self.volumes {
             volumes.push(volume.to_string());
-        }
-        self
-    }
-
-    pub(crate) fn add_networks(mut self, network_given: RCNetwork) -> Self {
-        if let Some(ref mut networks) = self.networks {
-            networks.push(network_given);
         }
         self
     }
