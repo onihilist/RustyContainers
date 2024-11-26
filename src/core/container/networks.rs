@@ -1,3 +1,4 @@
+use crate::core::container::RCContainer;
 
 #[derive(Debug, Clone)]
 pub struct RCNetwork {
@@ -40,4 +41,13 @@ pub struct RCIpamConfigEntry {
     pub subnet: Option<String>,
     pub ip_range: Option<String>,
     pub gateway: Option<String>,
+}
+
+impl RCContainer {
+    pub(crate) fn add_networks(mut self, network_given: RCNetwork) -> Self {
+        if let Some(ref mut networks) = self.networks {
+            networks.push(network_given);
+        }
+        self
+    }
 }
