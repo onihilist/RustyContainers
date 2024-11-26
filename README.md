@@ -5,10 +5,15 @@
 ( 🚨⚠️ **WARNING** : This lib is <ins>currently in development</ins>, **no warranty will be provided** )
 - Not still available in crates.io
 
-First of all, you probably wondering what is this library ?
+**First of all, you probably wondering what is this library ?**
 
 RustyContainer is a lib for create custom container in Rust, running your entire project in a container, and manage all about your containers/services. 
 It's also made for **high-performance, scalability/flexibility, portability.**
+
+**The functionalities of this lib at the end of development are as follows :**
+- Create & Manage containers
+- Perform CI/CD tests into each container
+- Generating log for each container and tests
 
 You can run your Rust project into a container but also run multiples other containers, there is an exemple : 
 
@@ -65,4 +70,3 @@ TODO : option in the list of features but not done
 | ✔️         | `.add_volume(volume: &str)`                        | OK    | Add a volume to the service.          | ❌                    |
 | ✔️         | `.add_network(network_given: RCNetwork)`           | OK    | Add a volume to the service.          | ❌                    |
 | ❌         | `.set_restart_policy(policy: &str)`                | TODO  |                                       | ❌                     |
-
