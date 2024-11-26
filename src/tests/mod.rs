@@ -5,6 +5,6 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let result = main();
+        let _ = main();
     }
 }
