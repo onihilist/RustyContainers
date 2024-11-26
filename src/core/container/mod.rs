@@ -1,5 +1,6 @@
 
-mod networks;
+pub mod networks;
+pub mod process;
 
 use std::collections::HashMap;
 use std::fs;
@@ -22,7 +23,7 @@ pub struct RCContainer {
     environment: Option<HashMap<String, String>>,
     volumes: Option<Vec<String>>,
     ports: Vec<RCPortMapping>,
-    networks: Option<RCNetwork>,
+    networks: Option<Vec<RCNetwork>>,
     restart_policy: Option<String>,
     healthcheck: Option<String>,
     deploy_policy: Option<String>,
@@ -40,6 +41,11 @@ struct RCPortMapping {
     container: String,
 }
 
+#[derive(Debug)]
+struct RCVolumes {
+    path: String,
+}
+
 impl RCContainer {
 
     pub(crate) fn new() -> Self {
@@ -50,10 +56,10 @@ impl RCContainer {
             build: None,
             command: None,
             depends_on: None,
-            environment: None,
-            volumes: None,
+            environment: Some(HashMap::new()),
+            volumes: Some(vec![]),
             ports: vec![],
-            networks: None,
+            networks: Some(vec![]),
             restart_policy: None,
             healthcheck: None,
             deploy_policy: None,
@@ -98,6 +104,13 @@ impl RCContainer {
         self
     }
 
+    pub(crate) fn add_networks(mut self, network_given: RCNetwork) -> Self {
+        if let Some(ref mut networks) = self.networks {
+            networks.push(network_given);
+        }
+        self
+    }
+
     pub(crate) fn set_restart_policy(mut self, policy: &str) -> Self {
         self.restart_policy = Some(policy.to_string());
         self
@@ -106,7 +119,7 @@ impl RCContainer {
 }
 
 impl RCServices {
-    pub fn generate_compose(&self) -> Result<(), std::io::Error> { // Take an immutable reference
+    pub fn generate_compose(&self) -> Result<(), std::io::Error> {
         let file = fs::File::create("docker-compose.yml")?;
         let mut writer = std::io::BufWriter::new(file);
 
@@ -116,11 +129,43 @@ impl RCServices {
         for container in &self.containers {
             writer.write_all(format!("  {}:\n", container.name).as_bytes())?;
             writer.write_all(format!("    image: {}\n", container.image).as_bytes())?;
-            writer.write_all(b"    ports:\n")?;
-            for port in &container.ports {
-                writer.write_all(format!("      - '{}:{}'\n", port.host, port.container).as_bytes())?;
+
+            if !container.ports.is_empty() {
+                writer.write_all(b"    ports:\n")?;
+                for port in &container.ports {
+                    writer.write_all(format!("      - '{}:{}'\n", port.host, port.container).as_bytes())?;
+                }
+            }
+
+            // Write environment variables if they exist
+            if let Some(ref env) = container.environment {
+                writer.write_all(b"    environment:\n")?;
+                for (key, value) in env {
+                    writer.write_all(format!("      {}: {}\n", key, value).as_bytes())?;
+                }
+            }
+
+            if let Some(ref vol) = container.volumes {
+                if !vol.is_empty() {
+                    writer.write_all(b"    volumes:\n")?;
+                    for volume in vol {
+                        writer.write_all(format!("      - {}\n", volume).as_bytes())?;
+                    }
+                }
             }
             writer.write_all(b"\n")?;
+        }
+
+        for container in &self.containers {
+            if let Some(ref net) = container.networks {
+                if !net.is_empty() {
+                    writer.write_all(b"networks:\n")?;
+                    for network in net {
+                        writer.write_all(format!("  {}:\n", network.name).as_bytes())?;
+                        writer.write_all(format!("    driver: {}", network.driver.unwrap()).as_bytes())?;
+                    }
+                }
+            }
         }
 
         Ok(())
