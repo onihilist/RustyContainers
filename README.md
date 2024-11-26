@@ -3,19 +3,19 @@
 ### Welcome to RustyContainer !
 
 ( 🚨⚠️ **WARNING** : This lib is <ins>currently in development</ins>, **no warranty will be provided** )
-- Not still available in crates.io
+- Not currently available in crates.io
 
-**First of all, you probably wondering what is this library ?**
+**First of all, you're probably wondering, what is this library ?**
 
-RustyContainer is a lib for create custom container in Rust, running your entire project in a container, and manage all about your containers/services. 
-It's also made for **high-performance, scalability/flexibility, portability.**
+RustyContainer is a lib to create custom containers in Rust, running your entire project in a container, and managing everything to do with your containers/services. 
+It's also made for **high-performance, scalability/flexibility and portability.**
 
 **The functionalities of this lib at the end of development are as follows :**
 - Create & Manage containers
 - Perform CI/CD tests into each container
 - Generating log for each container and tests
 
-You can run your Rust project into a container but also run multiples other containers, there is an exemple : 
+You can run your Rust project into a container but also run multiple other containers, here is an exemple : 
 
 ```rust
 pub fn main() -> Result<(), std::io::Error> {
@@ -37,7 +37,7 @@ pub fn main() -> Result<(), std::io::Error> {
 }
 ```
 
-This main function generate the following 'docker-compose.yml' file :
+This main function generates the following 'docker-compose.yml' file :
 
 ```docker-compose.yml
 version: '3.8'
