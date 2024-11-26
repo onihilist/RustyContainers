@@ -4,10 +4,22 @@ services:
     image: nginx:latest
     ports:
       - '8080:80'
+    environment:
+      KEY1: value1
+      KEY2: value2
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - myapp:/home/node/app
 
   second_service:
     image: rust:latest
     ports:
       - '8080:80'
       - '777:1010'
+    environment:
+      KEY1: value1
+      KEY2: value2
 
+networks:
+  my_network:
+    driver: bridge
