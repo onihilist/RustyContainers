@@ -15,8 +15,8 @@ pub struct RCServices {
 
 #[derive(Debug)]
 pub struct RCContainer {
-    id: Option<String>,
-    name: String,
+    pub(crate) id: Option<String>,
+    pub(crate) name: String,
     image: String,
     build: Option<String>,
     command: Option<String>,
@@ -62,6 +62,11 @@ impl RCContainer {
         }
     }
 
+    pub(crate) fn set_id(mut self, id: &str) -> Self {
+        self.id = Some(id.to_string());
+        self
+    }
+
     pub(crate) fn set_name(mut self, service_name: &str) -> Self {
         self.name = service_name.to_string();
         self
@@ -94,7 +99,7 @@ impl RCContainer {
 }
 
 impl RCServices {
-    pub fn generate_compose(&self) -> Result<(), std::io::Error> {
+    pub fn generate_compose(self) -> Result<Self, std::io::Error> {
         let file = fs::File::create("docker-compose.yml")?;
         let mut writer = std::io::BufWriter::new(file);
 
@@ -143,6 +148,6 @@ impl RCServices {
             }
         }
 
-        Ok(())
+        Ok(self)
     }
 }

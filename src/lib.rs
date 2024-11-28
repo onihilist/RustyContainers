@@ -8,9 +8,10 @@ mod core;
 mod tests;
 
 pub fn main() -> Result<(), std::io::Error> {
-    RCServices {
+    let services = RCServices {
         containers: vec![
             RCContainer::new()
+                .set_id("120df8c")
                 .set_name("first_service")
                 .set_image("nginx:latest")
                 .add_port(8080, 80)
@@ -26,6 +27,7 @@ pub fn main() -> Result<(), std::io::Error> {
                     external: None,
                 }),
             RCContainer::new()
+                .set_id("78s6xc4") // move .set_id() at the creation process of the container
                 .set_name("second_service")
                 .set_image("rust:latest")
                 .add_port(8080, 80)
@@ -33,7 +35,13 @@ pub fn main() -> Result<(), std::io::Error> {
                 .add_environment("KEY1", "value1")
                 .add_environment("KEY2", "value2")
         ],
-    }.generate_compose()?;
+    };
+
+    let compose = services.generate_compose()?;
+
+    for container in &compose.containers {
+        container.stop();
+    }
 
     Ok(())
 }

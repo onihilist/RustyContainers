@@ -3,8 +3,9 @@ use crate::core::manager;
 use crate::core::manager::loader::RCAction;
 
 impl RCContainer {
-    pub(crate) fn stop(&self) {
-        manager::loader::call_cmd(RCAction::STOP)
+    pub(crate) fn stop(&self) -> &Self {
+        manager::loader::call_cmd(&self.id.clone().unwrap(),RCAction::STOP);
+        self
     }
 
     pub(crate) fn start(&self) {

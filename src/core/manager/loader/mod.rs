@@ -5,7 +5,8 @@ pub enum RCAction {
     START,
     PAUSE,
     RESUME,
-    DISCARD
+    DISCARD,
+    PRUNE_ALL
 }
 
 impl RCAction {
@@ -16,24 +17,24 @@ impl RCAction {
             RCAction::PAUSE => "pause",
             RCAction::RESUME => "resume",
             RCAction::DISCARD => "prune",
+            RCAction::PRUNE_ALL => "prune"
         }
     }
 }
 
-pub fn call_cmd(action: RCAction) {
-
+pub fn call_cmd(container_id_or_name: &str, action: RCAction) {
     let output = Command::new("cmd")
         .arg("/C")
         .arg("../scripts/container.cmd")
         .arg(action.as_str())
+        .arg(container_id_or_name)
         .output()
         .expect("Failed to execute command");
 
     if output.status.success() {
-        println!("Command executed successfully.");
-        println!("Output:\n{}", String::from_utf8_lossy(&output.stdout));
+        println!("Command : docker {} {}", action.as_str(), container_id_or_name);
+        //println!("Output:\n{}", String::from_utf8_lossy(&output.stdout));
     } else {
-        eprintln!("Command failed to execute.");
-        eprintln!("Error:\n{}", String::from_utf8_lossy(&output.stderr));
+        eprintln!("Command failed to execute : docker {} {}", action.as_str(), container_id_or_name);
     }
 }

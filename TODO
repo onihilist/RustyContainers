@@ -1,0 +1,4 @@
+1 - Make functions : before, after, beforeEach, afterEach. (in process)
+2 - Handle replicas options for a service
+3 - Add at the end all custom networks & use it above
+4 - In future allow to use force "docker rm" in container.cmd
