@@ -16,8 +16,8 @@ impl RCAction {
             RCAction::START => "start",
             RCAction::PAUSE => "pause",
             RCAction::RESUME => "resume",
-            RCAction::DISCARD => "prune",
-            RCAction::PRUNE_ALL => "prune"
+            RCAction::DISCARD => "rm",
+            RCAction::PRUNE_ALL => "system prune -a"
         }
     }
 }

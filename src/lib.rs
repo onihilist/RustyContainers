@@ -35,11 +35,9 @@ pub fn main() -> Result<(), std::io::Error> {
                 .add_environment("KEY1", "value1")
                 .add_environment("KEY2", "value2")
         ],
-    };
+    }.generate_compose()?;
 
-    let compose = services.generate_compose()?;
-
-    for container in &compose.containers {
+    for container in &services.containers {
         container.stop();
     }
 

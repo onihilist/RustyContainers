@@ -5,8 +5,8 @@ services:
     ports:
       - '8080:80'
     environment:
-      KEY1: value1
       KEY2: value2
+      KEY1: value1
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - myapp:/home/node/app

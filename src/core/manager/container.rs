@@ -8,19 +8,28 @@ impl RCContainer {
         self
     }
 
-    pub(crate) fn start(&self) {
-        // Start the container
+    pub(crate) fn start(&self) -> &Self {
+        manager::loader::call_cmd(&self.id.clone().unwrap(),RCAction::STOP);
+        self
     }
 
-    pub(crate) fn pause(&self) {
-        // Pause the container
+    pub(crate) fn pause(&self) -> &Self {
+        manager::loader::call_cmd(&self.id.clone().unwrap(),RCAction::STOP);
+        self
     }
 
-    pub(crate) fn resume(&self) {
-        // Resume the container
+    pub(crate) fn resume(&self) -> &Self {
+        manager::loader::call_cmd(&self.id.clone().unwrap(),RCAction::STOP);
+        self
     }
 
-    pub(crate) fn discard(&self) {
-        // Delete the container
+    pub(crate) fn discard(&self) -> &Self {
+        manager::loader::call_cmd(&self.id.clone().unwrap(),RCAction::STOP);
+        self
+    }
+
+    pub(crate) fn prune_all(&self) -> &Self {
+        manager::loader::call_cmd(&self.id.clone().unwrap(),RCAction::STOP);
+        self
     }
 }
