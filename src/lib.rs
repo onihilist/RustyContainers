@@ -6,6 +6,7 @@ use crate::core::container::networks::{RCNetwork, RCNetworkDriver};
 
 mod core;
 mod tests;
+mod utils;
 
 pub fn main() -> Result<(), std::io::Error> {
     let services = RCServices {
