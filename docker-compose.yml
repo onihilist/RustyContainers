@@ -1,24 +1,18 @@
-version: '3.8'
+version: '3.7'
 services:
-  first_service:
+  nginx_service:
     image: nginx:latest
     ports:
       - '8080:80'
-    environment:
-      KEY2: value2
-      KEY1: value1
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf
-      - myapp:/home/node/app
+      - '443:443'
 
-  second_service:
-    image: rust:latest
+  mysql_service:
+    image: mysql:latest
     ports:
-      - '8080:80'
-      - '777:1010'
+      - '3306:3306'
     environment:
-      KEY1: value1
-      KEY2: value2
+      MYSQL_RANDOM_ROOT_PASSWORD: rootpass
+      MYSQL_ROOT_PASSWORD: rootpass
 
 networks:
   my_network:

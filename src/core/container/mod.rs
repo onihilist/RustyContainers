@@ -103,7 +103,7 @@ impl RCServices {
         let file = fs::File::create("docker-compose.yml")?;
         let mut writer = std::io::BufWriter::new(file);
 
-        writer.write_all(b"version: '3.8'\n")?;
+        writer.write_all(b"version: '3.7'\n")?;
         writer.write_all(b"services:\n")?;
 
         for container in &self.containers {
@@ -119,9 +119,11 @@ impl RCServices {
 
             // Write environment variables if they exist
             if let Some(ref env) = container.environment {
-                writer.write_all(b"    environment:\n")?;
-                for (key, value) in env {
-                    writer.write_all(format!("      {}: {}\n", key, value).as_bytes())?;
+                if !env.is_empty() {
+                    writer.write_all(b"    environment:\n")?;
+                    for (key, value) in env {
+                        writer.write_all(format!("      {}: {}\n", key, value).as_bytes())?;
+                    }
                 }
             }
 
