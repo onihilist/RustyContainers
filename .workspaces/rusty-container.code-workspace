@@ -1,19 +1,19 @@
 {
     "folders": [
       {
-	      "name": "Rusty Container Workspace",
+        "name": "Rusty Container Workspace",
         "path": "./"
       },
       {
-	      "name": "Main",
+	"name": "Main",
         "path": "../../RustyContainers"
       },
       {
-	      "name": "Core",
+	"name": "Core",
         "path": "../../RustyContainers/src/core"
       },
       {
-	      "name": "Tests",
+	"name": "Tests",
         "path": "../../RustyContainers/src/tests"
       },
     ]
