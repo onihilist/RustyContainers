@@ -15,23 +15,40 @@ It's also made for **high-performance, scalability/flexibility and portability.*
 - Perform CI/CD tests into each container
 - Generating log for each container and tests
 
-You can run your Rust project into a container but also run multiple other containers, here is an exemple : 
+You can run your Rust project into a container but also run multiple other containers, here is an exemple.
+This Rust code will generate 2 containers, the first one, a little functional nginx web server (http://localhost:8080/).
+And a MySQL database with the password "rootpass" :
 
 ```rust
 pub fn main() -> Result<(), std::io::Error> {
-    RCServices {
+    let services = RCServices {
         containers: vec![
             RCContainer::new()
-                .set_name("first_service")
+                .set_id("120df8c")
+                .set_name("nginx_service")
                 .set_image("nginx:latest")
-                .add_port("8080", "80"),
+                .add_port(8080, 80)
+                .add_port(443, 443)
+                .add_networks(RCNetwork{
+                    name: "my_network",
+                    driver: Some(RCNetworkDriver::BRIDGE.as_str()),
+                    driver_opts: None,
+                    ipam: None,
+                    external: None,
+                }),
             RCContainer::new()
-                .set_name("second_service")
-                .set_image("rust:latest")
-                .add_port("8080", "80")
-                .add_port("777", "1010")
+                .set_id("78s6xc4") // move .set_id() at the creation process of the container
+                .set_name("mysql_service")
+                .set_image("mysql:latest")
+                .add_port(3306, 3306)
+                .add_environment("MYSQL_ROOT_PASSWORD", "rootpass")
+                .add_environment("MYSQL_RANDOM_ROOT_PASSWORD", "rootpass")
         ],
     }.generate_compose()?;
+
+    for container in &services.containers {
+        container.stop();
+    }
 
     Ok(())
 }
@@ -40,18 +57,25 @@ pub fn main() -> Result<(), std::io::Error> {
 This main function generates the following 'docker-compose.yml' file :
 
 ```docker-compose.yml
-version: '3.8'
+version: '3.7'
 services:
-  first_service:
+  nginx_service:
     image: nginx:latest
     ports:
       - '8080:80'
+      - '443:443'
 
-  second_service:
-    image: rust:latest
+  mysql_service:
+    image: mysql:latest
     ports:
-      - '8080:80'
-      - '777:1010'
+      - '3306:3306'
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: rootpass
+      MYSQL_ROOT_PASSWORD: rootpass
+
+networks:
+  my_network:
+    driver: bridge
 ```
 
 ### Features (docker-compose) :
