@@ -2,13 +2,19 @@ use crate::core::container::{
     RCServices,
     RCContainer
 };
+use crate::colorama::Colored;
 use crate::core::container::networks::{RCNetwork, RCNetworkDriver};
+
+#[macro_use]
+extern crate colorama;
+extern crate chrono;
 
 mod core;
 mod tests;
 mod utils;
 
 pub fn main() -> Result<(), std::io::Error> {
+    rc_debug_mode!(true);
     let services = RCServices {
         containers: vec![
             RCContainer::new()

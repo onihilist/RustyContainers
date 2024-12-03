@@ -1,0 +1,11 @@
+[2024-12-03 14:58:41][DEBUG] - Debug mode is activated !
+[2024-12-03 14:58:41][INFO] - Executing command: cmd /C C:\Users\otual\AppData\Local\Temp\temp_script.cmd start nginx_service
+[2024-12-03 14:58:42][SUCCESS] - Command executed successfully
+[2024-12-03 14:58:42][INFO] - Starting container : nginx_service
+[2024-03-12 14:58:41][PS-ERROR] - Failed to start container: nginx_service
+
+[2024-12-03 14:58:42][INFO] - Executing command: cmd /C C:\Users\otual\AppData\Local\Temp\temp_script.cmd start mysql_service
+[2024-12-03 14:58:42][SUCCESS] - Command executed successfully
+[2024-12-03 14:58:42][INFO] - Starting container : mysql_service
+[2024-03-12 14:58:42][PS-ERROR] - Failed to start container: mysql_service
+

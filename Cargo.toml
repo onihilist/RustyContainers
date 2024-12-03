@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 colorama = "1.0.0"
+chrono = "0.4.38"

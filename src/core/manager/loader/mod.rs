@@ -2,6 +2,8 @@ use std::{env, io};
 use std::fs::File;
 use std::io::Write;
 use std::process::Command;
+use crate::colorama::Colored;
+use crate::{rc_error, rc_info, rc_success, log_message};
 
 pub enum RCAction {
     STOP,
@@ -45,7 +47,7 @@ pub fn call_cmd(container_id_or_name: &str, action: RCAction) -> io::Result<()> 
         container_id_or_name
     );
 
-    println!("Executing command: {}", command_str);
+    rc_info!(format!("Executing command: {}", command_str));
 
     let output = Command::new("cmd")
         .arg("/C")
@@ -57,15 +59,15 @@ pub fn call_cmd(container_id_or_name: &str, action: RCAction) -> io::Result<()> 
     match output {
         Ok(output) => {
             if output.status.success() {
-                println!("Command executed successfully");
-                println!("Output: {}", String::from_utf8_lossy(&output.stdout));
+                rc_success!("Command executed successfully");
+                rc_info!(format!("{}", String::from_utf8_lossy(&output.stdout)));
             } else {
-                eprintln!("Command failed with status: {}", output.status);
-                eprintln!("Error output: {}", String::from_utf8_lossy(&output.stderr));
+                rc_error!(format!("Command failed with status : {}", output.status));
+                rc_error!(format!("{}", String::from_utf8_lossy(&output.stderr)));
             }
         }
         Err(e) => {
-            eprintln!("Failed to execute command: {}", e);
+            rc_error!(format!("Failed to execute command : {}", e));
         }
     }
     Ok(())
