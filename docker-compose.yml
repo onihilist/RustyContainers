@@ -11,8 +11,8 @@ services:
     ports:
       - '3306:3306'
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_RANDOM_ROOT_PASSWORD: rootpass
+      MYSQL_ROOT_PASSWORD: rootpass
 
 networks:
   my_network:

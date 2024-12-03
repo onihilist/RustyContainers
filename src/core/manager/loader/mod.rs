@@ -40,14 +40,7 @@ pub fn call_cmd(container_id_or_name: &str, action: RCAction) -> io::Result<()> 
         temp_file.write_all(cmd_bytes)?;
     }
 
-    let command_str = format!(
-        "cmd /C {} {} {}",
-        temp_file_path.display(),
-        action.as_str(),
-        container_id_or_name
-    );
-
-    rc_info!(format!("Executing command: {}", command_str));
+    rc_info!(format!("Executing command: docker {} {}", action.as_str(), container_id_or_name));
 
     let output = Command::new("cmd")
         .arg("/C")
