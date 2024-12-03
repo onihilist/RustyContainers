@@ -7,6 +7,7 @@ use std::fs;
 use std::io::Write;
 use networks::RCNetwork;
 use port::RCPortMapping;
+use crate::core::manager::container;
 
 #[derive(Debug)]
 pub struct RCServices {
@@ -99,11 +100,11 @@ impl RCContainer {
 }
 
 impl RCServices {
-    pub fn generate_compose(self) -> Result<Self, std::io::Error> {
+    pub fn build(self) -> Result<Self, std::io::Error> {
         let file = fs::File::create("docker-compose.yml")?;
         let mut writer = std::io::BufWriter::new(file);
 
-        writer.write_all(b"version: '3.7'\n")?;
+        writer.write_all(b"version: '3.3'\n")?;
         writer.write_all(b"services:\n")?;
 
         for container in &self.containers {
@@ -148,6 +149,12 @@ impl RCServices {
                     }
                 }
             }
+        }
+
+        let containers = self.containers.iter().clone();
+
+        for container in containers {
+            container.start();
         }
 
         Ok(self)

@@ -32,11 +32,7 @@ pub fn main() -> Result<(), std::io::Error> {
                 .add_environment("MYSQL_ROOT_PASSWORD", "rootpass")
                 .add_environment("MYSQL_RANDOM_ROOT_PASSWORD", "rootpass")
         ],
-    }.generate_compose()?;
-
-    for container in &services.containers {
-        container.stop();
-    }
+    }.build()?;
 
     Ok(())
 }
