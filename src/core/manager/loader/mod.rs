@@ -33,13 +33,11 @@ pub fn call_cmd(container_id_or_name: &str, action: RCAction) -> io::Result<()> 
     let temp_dir = env::temp_dir();
     let temp_file_path = temp_dir.join("temp_script.cmd");
 
-    // Write the command bytes to a temporary file
     {
         let mut temp_file = File::create(&temp_file_path)?;
         temp_file.write_all(cmd_bytes)?;
     }
 
-    // Construct the command to be executed
     let command_str = format!(
         "cmd /C {} {} {}",
         temp_file_path.display(),
@@ -47,10 +45,8 @@ pub fn call_cmd(container_id_or_name: &str, action: RCAction) -> io::Result<()> 
         container_id_or_name
     );
 
-    // Print the command for debugging purposes
     println!("Executing command: {}", command_str);
 
-    // Execute the command
     let output = Command::new("cmd")
         .arg("/C")
         .arg(&temp_file_path)
